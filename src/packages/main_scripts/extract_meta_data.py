@@ -1,7 +1,6 @@
 """Extract metadata from video."""
 if __name__ == "__main__":
     import cv2
-    import time
     from os import path
     import argparse
     import json
@@ -21,19 +20,19 @@ if __name__ == "__main__":
     # read video file to extract meta data
     video_cap = cv2.VideoCapture(video_file)
     fps = video_cap.get(cv2.CAP_PROP_FPS)
-    total_frame = video_cap.get(cv2.CAP_PROP_FRAME_COUNT)
+    frame_count = video_cap.get(cv2.CAP_PROP_FRAME_COUNT)
     width = int(video_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(video_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     video_cap.release()
 
-    length = (total_frame/fps)*1000
+    length = (frame_count/fps)*1000
     size = path.getsize(video_file)
 
     data = dict(
-        lenght=length,
+        length=length,
         size=size,
         fps=fps,
-        total_frame=total_frame,
+        frame_count=frame_count,
         width=width,
         height=height
     )
