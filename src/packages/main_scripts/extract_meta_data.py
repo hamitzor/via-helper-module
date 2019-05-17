@@ -13,7 +13,7 @@ if __name__ == "__main__":
         "video_file", help="File to extract meta data")
 
     parser.add_argument(
-        "tumbnail_save_directory", help="Directory to save tumbnail")
+        "thumbnail_save_directory", help="Directory to save thumbnail")
 
     args = parser.parse_args()
     video_file = path.abspath(args.video_file)
@@ -31,11 +31,11 @@ if __name__ == "__main__":
     res, frame = video_cap.read()
     random = str(uuid.uuid4())
 
-    tumbnail_name = random+'.jpg'
+    thumbnail_name = random+'.jpg'
 
-    tumbnail = args.tumbnail_save_directory+'/'+tumbnail_name
+    thumbnail = args.thumbnail_save_directory+'/'+thumbnail_name
 
-    cv2.imwrite(tumbnail, frame)
+    cv2.imwrite(thumbnail, frame)
 
     width = int(video_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(video_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -51,7 +51,7 @@ if __name__ == "__main__":
         frame_count=frame_count,
         width=width,
         height=height,
-        tumbnail=tumbnail_name)
+        thumbnail=thumbnail_name)
 
     print json.dumps(data, indent=2)
 
