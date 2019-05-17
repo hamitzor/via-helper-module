@@ -1,14 +1,19 @@
 """Extract metadata from video."""
 if __name__ == "__main__":
     import cv2
+    import time
     from os import path
     import argparse
     import json
+    import uuid
 
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
         "video_file", help="File to extract meta data")
+
+    parser.add_argument(
+        "tumbnail_save_directory", help="Directory to save tumbnail")
 
     args = parser.parse_args()
     video_file = path.abspath(args.video_file)
@@ -21,6 +26,17 @@ if __name__ == "__main__":
     video_cap = cv2.VideoCapture(video_file)
     fps = video_cap.get(cv2.CAP_PROP_FPS)
     frame_count = video_cap.get(cv2.CAP_PROP_FRAME_COUNT)
+
+    video_cap.set(cv2.CAP_PROP_POS_FRAMES, (frame_count/2)-1)
+    res, frame = video_cap.read()
+    random = str(uuid.uuid4())
+
+    tumbnail_name = random+'.jpg'
+
+    tumbnail = args.tumbnail_save_directory+'/'+tumbnail_name
+
+    cv2.imwrite(tumbnail, frame)
+
     width = int(video_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(video_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     video_cap.release()
@@ -34,8 +50,8 @@ if __name__ == "__main__":
         fps=fps,
         frame_count=frame_count,
         width=width,
-        height=height
-    )
+        height=height,
+        tumbnail=tumbnail_name)
 
     print json.dumps(data, indent=2)
 
